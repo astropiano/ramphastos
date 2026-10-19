@@ -1,0 +1,11 @@
+description: "Ramphastos vNext hello-world: CounterVm server (SignalR sync) + React frontend"
+frontend-services:
+  app: "http://localhost:${RAMPHASTOS_WEB_PORT:-5173}"
+backend-services:
+  api: "http://localhost:${RAMPHASTOS_API_PORT:-5000}"
+env:
+  RAMPHASTOS_API_PORT: "5000"
+  RAMPHASTOS_WEB_PORT: "5173"
+links:
+  - label: "SignalR endpoint"
+    url: "http://localhost:${RAMPHASTOS_API_PORT:-5000}/ramphastos"

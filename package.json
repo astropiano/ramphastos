@@ -1,0 +1,8 @@
+{
+  "name": "ramphastos",
+  "private": true,
+  "workspaces": [
+    "src/client/*",
+    "examples/*/web"
+  ]
+}
