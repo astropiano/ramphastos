@@ -1,4 +1,4 @@
-# Astropiano Ramphastos
+# Ramphastos
 
 Realtime UI state sync for .NET: a server-side view-model graph is tracked,
 diffed and streamed to TypeScript clients over SignalR/WebSocket, so a React
@@ -16,23 +16,23 @@ diffed and streamed to TypeScript clients over SignalR/WebSocket, so a React
 | `Ramphastos.TestSdk` | Test helpers for session round-trips |
 | `Ramphastos.Core.Facts` | xunit test suite |
 
-npm (`@astropiano` scope):
+npm (`@ramphastos` scope):
 
 | Package | Purpose |
 | --- | --- |
-| `ramphastos-client` | Framework-agnostic protocol client |
-| `ramphastos-react` | React bindings (`RamphastosProvider`, hooks) |
+| `@ramphastos/ramphastos-client` | Framework-agnostic protocol client |
+| `@ramphastos/ramphastos-react` | React bindings (`RamphastosProvider`, hooks) |
 
 ## Example
 
 `examples/hello-world` hosts a `CounterVm` on ASP.NET Core and renders it in
 React; `scenarios/ramphastos-example` runs the same demo in Docker
-(`axn-dev start -s ramphastos-example`).
+(`docker compose` in that directory).
 
 ## Building
 
 ```
-dotnet build Ramphastos.slnx
+dotnet build RamphastosUi.slnx
 npm install
 npm run build --workspace src/client/ramphastos-client --workspace src/client/ramphastos-react
 ```
@@ -40,7 +40,7 @@ npm run build --workspace src/client/ramphastos-client --workspace src/client/ra
 ## Testing
 
 ```
-dotnet test Ramphastos.slnx
+dotnet test RamphastosUi.slnx
 ```
 
 ## License
