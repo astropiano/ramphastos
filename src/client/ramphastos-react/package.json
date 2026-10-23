@@ -1,5 +1,5 @@
 {
-  "name": "@astropiano/ramphastos-react",
+  "name": "@ramphastos/ramphastos-react",
   "version": "0.2.0",
   "description": "React bindings for Ramphastos sessions",
   "type": "module",
@@ -23,7 +23,7 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@astropiano/ramphastos-client": "^0.2.0"
+    "@ramphastos/ramphastos-client": "^0.2.0"
   },
   "devDependencies": {
     "react": "^19.1.0",

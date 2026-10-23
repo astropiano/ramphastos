@@ -6,22 +6,22 @@ diffed and streamed to TypeScript clients over SignalR/WebSocket, so a React
 
 ## Packages
 
-.NET (namespaces `Astropiano.Ramphastos.*`):
+.NET (namespaces `Ramphastos.*`):
 
 | Project | Purpose |
 | --- | --- |
-| `Astropiano.Ramphastos.Core` | Object-graph tracking, diffing, session model |
-| `Astropiano.Ramphastos.Protocol` | Wire protocol types (hello, patches, streams) |
-| `Astropiano.Ramphastos.Server` | ASP.NET Core hosting / SignalR endpoint |
-| `Astropiano.Ramphastos.TestSdk` | Test helpers for session round-trips |
-| `Astropiano.Ramphastos.Core.Facts` | xunit test suite |
+| `Ramphastos.Core` | Object-graph tracking, diffing, session model |
+| `Ramphastos.Protocol` | Wire protocol types (hello, patches, streams) |
+| `Ramphastos.Server` | ASP.NET Core hosting / SignalR endpoint |
+| `Ramphastos.TestSdk` | Test helpers for session round-trips |
+| `Ramphastos.Core.Facts` | xunit test suite |
 
 npm (`@astropiano` scope):
 
 | Package | Purpose |
 | --- | --- |
-| `@astropiano/ramphastos-client` | Framework-agnostic protocol client |
-| `@astropiano/ramphastos-react` | React bindings (`RamphastosProvider`, hooks) |
+| `ramphastos-client` | Framework-agnostic protocol client |
+| `ramphastos-react` | React bindings (`RamphastosProvider`, hooks) |
 
 ## Example
 
@@ -32,7 +32,7 @@ React; `scenarios/ramphastos-example` runs the same demo in Docker
 ## Building
 
 ```
-dotnet build Astropiano.Ramphastos.slnx
+dotnet build Ramphastos.slnx
 npm install
 npm run build --workspace src/client/ramphastos-client --workspace src/client/ramphastos-react
 ```
@@ -40,7 +40,7 @@ npm run build --workspace src/client/ramphastos-client --workspace src/client/ra
 ## Testing
 
 ```
-dotnet test Astropiano.Ramphastos.slnx
+dotnet test Ramphastos.slnx
 ```
 
 ## License

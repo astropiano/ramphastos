@@ -8,8 +8,8 @@ COPY src/client/ramphastos-react src/client/ramphastos-react
 COPY examples/hello-world/web examples/hello-world/web
 
 RUN npm ci
-RUN npm run build -w @astropiano/ramphastos-client \
- && npm run build -w @astropiano/ramphastos-react \
+RUN npm run build -w ramphastos-client \
+ && npm run build -w ramphastos-react \
  && npm run build -w hello-world-web
 
 FROM nginx:alpine

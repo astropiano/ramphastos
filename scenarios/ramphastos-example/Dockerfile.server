@@ -3,9 +3,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
 COPY Directory.Packages.props .
-COPY src/Astropiano.Ramphastos.Protocol src/Astropiano.Ramphastos.Protocol
-COPY src/Astropiano.Ramphastos.Core src/Astropiano.Ramphastos.Core
-COPY src/Astropiano.Ramphastos.Server src/Astropiano.Ramphastos.Server
+COPY src/Ramphastos.Protocol src/Ramphastos.Protocol
+COPY src/Ramphastos.Core src/Ramphastos.Core
+COPY src/Ramphastos.Server src/Ramphastos.Server
 COPY examples/hello-world/HelloWorld.Server examples/hello-world/HelloWorld.Server
 
 RUN dotnet publish examples/hello-world/HelloWorld.Server/HelloWorld.Server.csproj \

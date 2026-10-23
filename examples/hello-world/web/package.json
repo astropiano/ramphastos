@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@astropiano/ramphastos-client": "*",
-    "@astropiano/ramphastos-react": "*",
+    "@ramphastos/ramphastos-client": "*",
+    "@ramphastos/ramphastos-react": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

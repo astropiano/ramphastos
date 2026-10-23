@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Astropiano.Ramphastos.Server\Astropiano.Ramphastos.Server.csproj" />
+    <ProjectReference Include="..\..\..\src\Ramphastos.Server\Ramphastos.Server.csproj" />
   </ItemGroup>
 
 </Project>

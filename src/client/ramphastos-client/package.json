@@ -1,5 +1,5 @@
 {
-  "name": "@astropiano/ramphastos-client",
+  "name": "@ramphastos/ramphastos-client",
   "version": "0.2.0",
   "description": "Framework-agnostic Ramphastos protocol client",
   "type": "module",
