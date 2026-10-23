@@ -34,7 +34,7 @@ React; `scenarios/ramphastos-example` runs the same demo in Docker
 ```
 dotnet build RamphastosUi.slnx
 npm install
-npm run build --workspace src/client/ramphastos-client --workspace src/client/ramphastos-react
+npm run build --workspace @ramphastos/ramphastos-client --workspace @ramphastos/ramphastos-react
 ```
 
 ## Testing
