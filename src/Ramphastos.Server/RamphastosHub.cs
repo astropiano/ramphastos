@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Ramphastos.Protocol;
 
 namespace Ramphastos.Server;
@@ -12,8 +13,15 @@ namespace Ramphastos.Server;
 public sealed class RamphastosHub : Hub
 {
     private readonly RamphastosConnectionHandler _handler;
+    private readonly ILogger<RamphastosHub>? _log;
 
-    public RamphastosHub(RamphastosConnectionHandler handler) => _handler = handler;
+    public RamphastosHub(
+        RamphastosConnectionHandler handler,
+        ILogger<RamphastosHub>? log = null)
+    {
+        _handler = handler;
+        _log = log;
+    }
 
     /// <summary>Client→server entry point. Payload is one message envelope.</summary>
     public async Task Send(JsonObject envelope)
@@ -62,6 +70,10 @@ public sealed class RamphastosHub : Hub
 
     public override Task OnDisconnectedAsync(Exception? exception)
     {
+        if (exception is not null)
+            _log?.LogWarning(exception, "conn {ConnId} dropped with error", Context.ConnectionId);
+        else
+            _log?.LogInformation("conn {ConnId} disconnected", Context.ConnectionId);
         _handler.HandleDisconnect(Context.ConnectionId);
         return base.OnDisconnectedAsync(exception);
     }

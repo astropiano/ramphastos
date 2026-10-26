@@ -234,6 +234,9 @@ public sealed class ClientSession : SessionEndpointBase
 
             if (connId == s._authorityConnId)
             {
+                s._log?.LogWarning(
+                    "ClientSession {SessionId}: authority conn {ConnId} detached — session is authority_offline until re-hello",
+                    s.Id, connId);
                 s._authorityConnId = null;
                 // Streams are live resources owned by the authority — they die
                 // with its connection.

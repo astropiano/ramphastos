@@ -46,6 +46,9 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
     {
         if (_options.AuthorizeHello is { } authorize && !authorize(hello))
         {
+            _options.Logger?.LogWarning(
+                "Hello rejected: conn {ConnId} role={Role} session={Session}",
+                connectionId, hello.Role, hello.Session);
             await _sendTo(connectionId, new ErrorMessage
             {
                 Error = new ErrorBody
@@ -60,9 +63,16 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
 
         if (hello.Role == SessionRole.Authority)
         {
+            _options.Logger?.LogInformation(
+                "Authority hello: conn {ConnId} session={Session}",
+                connectionId, hello.Session);
             await AttachAuthority(connectionId, hello).ConfigureAwait(false);
             return;
         }
+
+        _options.Logger?.LogDebug(
+            "Client hello: conn {ConnId} role={Role} session={Session}",
+            connectionId, hello.Role, hello.Session);
 
         // Fail closed on unknown role values — only the defined roles exist.
         var role = hello.Role == SessionRole.Controller
@@ -125,6 +135,9 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
         }
 
         _connectionSessions[connectionId] = session.Id;
+        _options.Logger?.LogInformation(
+            "Authority attached: conn {ConnId} session={Session} (mirrored)",
+            connectionId, session.Id);
         await session.ConnectAsync(
             new SessionConnection
             {
@@ -272,9 +285,17 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
         if (_connectionSessions.TryRemove(connectionId, out var sessionId) &&
             _sessions.TryGetValue(sessionId, out var session))
         {
+            _options.Logger?.LogInformation(
+                "Disconnect: conn {ConnId} session={Session}",
+                connectionId, sessionId);
             session.Disconnect(connectionId);
             if (_options.Provider is not null)
                 _ = SuspendAfterGraceAsync(session);
+        }
+        else
+        {
+            _options.Logger?.LogDebug(
+                "Disconnect of unattached conn {ConnId}", connectionId);
         }
     }
 

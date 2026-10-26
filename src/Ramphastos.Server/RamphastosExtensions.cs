@@ -19,7 +19,13 @@ public static class RamphastosExtensions
         // explicit "streamId": null, which is distinguishable from absent.
         services.AddSignalR().AddJsonProtocol(options =>
             options.PayloadSerializerOptions.DefaultIgnoreCondition =
-                System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
+                System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)
+            // Authority snapshots carry the full mirrored state (workspaces,
+            // sessions, pluginStates, scrollback) — the 32KB SignalR default
+            // kills the authority connection mid-publish and leaves viewers
+            // staring at authority_offline forever.
+            .AddHubOptions<RamphastosHub>(options =>
+                options.MaximumReceiveMessageSize = 32 * 1024 * 1024);
         services.AddSingleton(sp =>
         {
             var options = new RamphastosOptions { VmFactory = () => vmFactory(sp) };
