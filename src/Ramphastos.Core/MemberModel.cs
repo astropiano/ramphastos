@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using Astropiano.ReflectionTools;
+using TotalSerializer.ReflectionTools;
 
 namespace Ramphastos.Core;
 

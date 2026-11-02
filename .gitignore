@@ -10,15 +10,3 @@ dist/
 
 # misc
 .DS_Store
-
-# dotnet extras
-.vs/
-TestResults/
-
-# IDE
-.vscode/
-.idea/
-
-# local env
-.env
-.env.local

@@ -10,7 +10,7 @@ public static class RamphastosExtensions
     /// <summary>Registers Ramphastos services with a VM factory and optional configuration.</summary>
     public static IServiceCollection AddRamphastos(
         this IServiceCollection services,
-        Func<IServiceProvider, ApplicationModel> vmFactory,
+        Func<IServiceProvider, ApplicationModel?> vmFactory,
         Action<RamphastosOptions>? configure = null)
     {
         // The hub serializes envelope args with SignalR's own JsonHubProtocol

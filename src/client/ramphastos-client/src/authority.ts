@@ -256,9 +256,20 @@ export class RamphastosAuthority {
           p.reject(new RamphastosError(err));
         } else {
           this.errorListeners.forEach((cb) => cb(new RamphastosError(err)));
+          if (err?.code === "authority_replaced") {
+            // Superseded by another authority hello — drop the transport.
+            // Reconnecting would just re-hello and start an ownership
+            // ping-pong; intentionalClose keeps the state quiet (the app's
+            // live instance owns the session now, or it will re-attach).
+            this.intentionalClose = true;
+            void this.conn.stop();
+          }
           if (err?.fatal) {
             this.failReady(new RamphastosError(err));
-            if (this._state === "reconnecting") this.scheduleHelloRetry();
+            // No hello retry after authority_replaced — the transport is
+            // intentionally stopped; re-hello would ping-pong ownership.
+            if (this._state === "reconnecting" && err?.code !== "authority_replaced")
+              this.scheduleHelloRetry();
           }
         }
         break;
@@ -417,7 +428,11 @@ export class RamphastosAuthority {
 
   private send(msg: Envelope): void {
     stripUndefined(msg);
-    void this.conn.send("Send", msg);
+    // A dead conn rejects every send — a superseded authority (or any
+    // dropped transport) would otherwise surface unhandled rejections for
+    // fire-and-forget publishes that are no-ops anyway.
+    if (this.conn.state !== signalR.HubConnectionState.Connected) return;
+    void this.conn.send("Send", msg).catch(() => {});
   }
 
   /** Drop the socket and reattach to the same session. */

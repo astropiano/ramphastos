@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Text.Json.Nodes;
-using Astropiano.TotalSerializer.Configuration;
+using TotalSerializer.Configuration;
 using Ramphastos.Protocol;
-using TsSerializer = Astropiano.TotalSerializer.TotalSerializer;
+using TsSerializer = TotalSerializer.TotalSerializer;
 
 namespace Ramphastos.Core;
 

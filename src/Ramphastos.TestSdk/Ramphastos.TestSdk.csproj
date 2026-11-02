@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Astropiano.TotalSerializer" />
+    <PackageReference Include="TotalSerializer" />
     <PackageReference Include="DiffMatchPatch" />
     <ProjectReference Include="..\Ramphastos.Core\Ramphastos.Core.csproj" />
     <ProjectReference Include="..\Ramphastos.Protocol\Ramphastos.Protocol.csproj" />

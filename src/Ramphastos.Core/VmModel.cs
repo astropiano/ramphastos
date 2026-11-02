@@ -7,7 +7,7 @@ namespace Ramphastos.Core;
 /// <summary>
 /// Root view-model model: the shared <see cref="MemberModel"/> plus the
 /// invokable commands (which exist only at the root). Member access goes
-/// through Astropiano.ReflectionTools compiled accessors (§6.5).
+/// through TotalSerializer.ReflectionTools compiled accessors (§6.5).
 /// </summary>
 internal sealed class VmModel
 {

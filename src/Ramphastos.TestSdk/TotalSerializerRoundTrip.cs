@@ -1,10 +1,10 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Text.Json.Nodes;
-using Astropiano.TotalSerializer.Configuration;
+using TotalSerializer.Configuration;
 using Ramphastos.Core;
 using Ramphastos.Protocol;
-using TotalSerializerImpl = Astropiano.TotalSerializer.TotalSerializer;
+using TotalSerializerImpl = TotalSerializer.TotalSerializer;
 
 namespace Ramphastos.TestSdk;
 

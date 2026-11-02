@@ -179,7 +179,52 @@ public sealed class ClientSession : SessionEndpointBase
 
             if (conn.Role == SessionRole.Authority)
             {
-                // One authority at a time — a re-attach replaces the old one.
+                // One authority at a time — a re-attach replaces the old
+                // one. Tell the superseded conn so its client can drop the
+                // transport: left inert it would keep retrying hellos and
+                // hold streams/claims alive as a zombie authority.
+                if (s._authorityConnId is { } old && old != conn.Id)
+                {
+                    await s.Send(old, new ErrorMessage
+                    {
+                        Session = s.Id,
+                        Seq = ++s._seq,
+                        Error = new ErrorBody
+                        {
+                            Code = ErrorCode.AuthorityReplaced,
+                            Message = "Another authority attached to this session.",
+                            Fatal = true,
+                        },
+                    }).ConfigureAwait(false);
+                    // Streams were tunneled to the superseded conn — close
+                    // them for everyone, same as an authority detach.
+                    foreach (var (id, stream) in s._streams.ToArray())
+                    {
+                        s._streams.Remove(id);
+                        await s.SendAll(new StreamCloseMessage
+                        {
+                            Session = s.Id,
+                            Seq = ++s._seq,
+                            Stream = stream.name,
+                            StreamId = id,
+                            Reason = "authority replaced",
+                        }).ConfigureAwait(false);
+                    }
+                    foreach (var pending in s._pendingInvokes)
+                        await s.Send(pending.Value, new ResultMessage
+                        {
+                            Session = s.Id,
+                            Seq = ++s._seq,
+                            Ref = pending.Key,
+                            Error = new ErrorBody
+                            {
+                                Code = ErrorCode.AuthorityReplaced,
+                                Message = "Authority was replaced.",
+                            },
+                        }).ConfigureAwait(false);
+                    s._pendingInvokes.Clear();
+                    s._pendingStreamOpens.Clear();
+                }
                 s._authorityConnId = conn.Id;
             }
 

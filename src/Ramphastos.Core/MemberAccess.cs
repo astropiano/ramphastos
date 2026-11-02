@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
 using System.Reflection;
-using Astropiano.ReflectionTools;
+using TotalSerializer.ReflectionTools;
 
 namespace Ramphastos.Core;
 
 /// <summary>
 /// Compiled member accessors for view-model properties. Creation is once per
-/// member; access goes through Astropiano.ReflectionTools IL-emitting
+/// member; access goes through TotalSerializer.ReflectionTools IL-emitting
 /// reader/writer types (the differ's hot path — §6.5).
 /// </summary>
 internal static class MemberAccess

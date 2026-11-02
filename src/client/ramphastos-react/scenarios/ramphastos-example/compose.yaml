@@ -1,0 +1,24 @@
+# Ramphastos vNext hello-world scenario
+#
+#   api: HelloWorld.Server — ASP.NET Core host, /ramphastos SignalR endpoint (CounterVm)
+#   web: React app (vite build served by nginx) synced live via ramphastos-client
+#
+#   axn-dev start -s ramphastos-example
+#   open http://localhost:5173
+
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: scenarios/ramphastos-example/Dockerfile.server
+    ports:
+      - "${RAMPHASTOS_API_PORT:-5000}:5000"
+
+  web:
+    build:
+      context: ../..
+      dockerfile: scenarios/ramphastos-example/Dockerfile.web
+    ports:
+      - "${RAMPHASTOS_WEB_PORT:-5173}:80"
+    depends_on:
+      - api

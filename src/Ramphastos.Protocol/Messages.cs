@@ -48,4 +48,7 @@ public static class ErrorCode
     public const string StreamRejected = "stream_rejected";
     /// <summary>A mirrored session's authority is not attached (§4.9).</summary>
     public const string AuthorityOffline = "authority_offline";
+    /// <summary>Sent to a superseded authority conn — another authority
+    /// hello took over the session (§4.9).</summary>
+    public const string AuthorityReplaced = "authority_replaced";
 }

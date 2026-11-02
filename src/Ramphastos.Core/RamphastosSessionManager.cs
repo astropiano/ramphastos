@@ -12,7 +12,7 @@ namespace Ramphastos.Core;
 /// </summary>
 public sealed class RamphastosSessionManager : IAsyncDisposable
 {
-    private readonly Func<ApplicationModel> _vmFactory;
+    private readonly Func<ApplicationModel?> _vmFactory;
     private readonly Func<string, RamphastosMessage, Task> _sendTo;
     private readonly Func<string, byte[], Task>? _sendFrameTo;
     private readonly SessionOptions _options;
@@ -20,7 +20,7 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
     private readonly ConcurrentDictionary<string, string> _connectionSessions = new();
 
     public RamphastosSessionManager(
-        Func<ApplicationModel> vmFactory,
+        Func<ApplicationModel?> vmFactory,
         Func<string, RamphastosMessage, Task> sendTo,
         SessionOptions? options = null,
         Func<string, byte[], Task>? sendFrameTo = null)
@@ -91,8 +91,14 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
 
         // Honor a requested id for fresh sessions too — a stable, well-known
         // session name (e.g. per-user 'axn-shared' on a per-user session host)
-        // is how multiple devices converge on the same VM.
-        session ??= CreateSession(_vmFactory(), sessionId: hello.Session);
+        // is how multiple devices converge on the same VM. A null VM factory
+        // marks a client-authoritative hub (/remote mirrors): a viewer hello
+        // racing the authority claims a mirrored slot instead of a server-
+        // owned session — AttachAuthority rejects the latter forever, so the
+        // id would be poisoned until hub restart.
+        session ??= _vmFactory() is { } vm
+            ? CreateSession(vm, sessionId: hello.Session)
+            : CreateClientSession(hello.Session);
         _sessions.TryAdd(session.Id, session);
 
         _connectionSessions[connectionId] = session.Id;
@@ -213,7 +219,7 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
         }
 
         ApplicationModel? vm;
-        try { vm = codec.DeserializeState(state, format, _vmFactory); }
+        try { vm = codec.DeserializeState(state, format, () => _vmFactory()!); }
         catch (Exception ex)
         {
             _options.Logger?.LogError(ex,
@@ -303,6 +309,13 @@ public sealed class RamphastosSessionManager : IAsyncDisposable
     {
         await Task.Delay(_options.DisconnectGrace).ConfigureAwait(false);
         if (session.ConnectionCount > 0 || !_sessions.ContainsKey(session.Id))
+            return;
+
+        // A mirrored (client-authoritative) session is a resume target,
+        // not a transient room: a dropped authority leaves it
+        // authority_offline and discoverable until it re-hellos — evicting
+        // it would empty /remote/sessions and brick viewer discovery.
+        if (session is ClientSession)
             return;
 
         // Serialize inside the actor turn for a consistent graph snapshot.

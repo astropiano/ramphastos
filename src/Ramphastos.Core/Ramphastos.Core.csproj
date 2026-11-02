@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Astropiano.ReflectionTools" />
-    <PackageReference Include="Astropiano.TotalSerializer" />
+    <PackageReference Include="TotalSerializer.ReflectionTools" />
+    <PackageReference Include="TotalSerializer" />
     <PackageReference Include="DiffMatchPatch" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="StackExchange.Redis" />

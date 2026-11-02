@@ -14,7 +14,12 @@
   "files": [
     "dist"
   ],
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/astropiano/ramphastos.git",
+    "directory": "src/client/ramphastos-client"
+  },
+  "license": "UNLICENSED",
   "scripts": {
     "build": "tsc -b",
     "prepack": "npm run build"

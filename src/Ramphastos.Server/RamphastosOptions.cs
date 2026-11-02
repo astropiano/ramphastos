@@ -4,8 +4,11 @@ namespace Ramphastos.Server;
 
 public sealed class RamphastosOptions
 {
-    /// <summary>Creates the application model for a new session.</summary>
-    public required Func<ApplicationModel> VmFactory { get; set; }
+    /// <summary>Factory for server-owned session VMs. A null return marks a
+    /// client-authoritative hub (/remote mirrors): viewer hellos to unknown
+    /// sessions create a ClientSession (authority_offline), never a server
+    /// session that would permanently block the real authority's attach.</summary>
+    public required Func<ApplicationModel?> VmFactory { get; set; }
 
     /// <summary>Session persistence (memory/file built in; Redis is M5).</summary>
     public ISessionProvider? Provider { get; set; }

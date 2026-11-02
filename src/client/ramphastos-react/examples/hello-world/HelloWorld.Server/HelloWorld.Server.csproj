@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- distro RIDs without apphost packs (e.g. Arch 'arch-x64') can't resolve Microsoft.NETCore.App.Host.* -->
+    <UseAppHost>false</UseAppHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Ramphastos.Server\Ramphastos.Server.csproj" />
+  </ItemGroup>
+
+</Project>

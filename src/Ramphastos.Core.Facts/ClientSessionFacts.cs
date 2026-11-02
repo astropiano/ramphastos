@@ -331,4 +331,32 @@ public class ClientSessionFacts
         var session = (ClientSession)host.Manager.Endpoints.Single();
         session.Replica.Should().NotContainKey("hax");
     }
+
+    [Fact]
+    public async Task Superseded_authority_gets_authority_replaced_and_loses_the_session()
+    {
+        // A second authority hello must kill the first conn's claim: the
+        // old conn gets a fatal authority_replaced, its streams die, and
+        // its later state pushes are dropped — otherwise a zombie
+        // authority races the live one (the parallel-conn 'total mess').
+        await using var host = new TestHost(() => new DemoVm());
+        var a1 = await host.ConnectAuthorityAsync();
+        var sessionId = a1.SessionId!;
+        host.PushSnapshot(a1, State(("title", JsonValue.Create("old"))));
+        await FlushAsync();
+        var viewer = await host.ConnectAsync(sessionId: sessionId);
+
+        var a2 = await host.ConnectAuthorityAsync(sessionId);
+        await FlushAsync();
+
+        a1.FatalError?.Code.Should().Be(ErrorCode.AuthorityReplaced);
+        a2.FatalError.Should().BeNull();
+        a2.Errors.Should().BeEmpty();
+
+        // The superseded conn's pushes never reach the replica…
+        host.PushSnapshot(a1, State(("title", JsonValue.Create("zombie"))));
+        host.PushSnapshot(a2, State(("title", JsonValue.Create("live"))));
+        await FlushAsync();
+        viewer.At("/title")!.GetValue<string>().Should().Be("live");
+    }
 }

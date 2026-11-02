@@ -303,16 +303,18 @@ export class RamphastosSession {
       name,
       streamId,
       direction,
-      (frame) => void this.conn.send("SendFrame", toBase64(frame)),
+      (frame) => void this.conn.send("SendFrame", toBase64(frame)).catch(() => {}),
       (reason) =>
-        void this.conn.send("Send", {
-          v: PROTOCOL_VERSION,
-          type: "stream-close",
-          session: this.sessionId,
-          stream: name,
-          streamId,
-          reason,
-        }),
+        void this.conn
+          .send("Send", {
+            v: PROTOCOL_VERSION,
+            type: "stream-close",
+            session: this.sessionId,
+            stream: name,
+            streamId,
+            reason,
+          })
+          .catch(() => {}),
     );
     this.streams.set(streamId, stream);
     return stream;
@@ -343,7 +345,12 @@ export class RamphastosSession {
     const result = new Promise<RamphastosStream>((resolve, reject) =>
       this.pendingStreams.set(name, { resolve: resolve as (v: unknown) => void, reject }),
     );
-    void this.conn.send("Send", msg);
+    this.conn.send("Send", msg).catch((e) => {
+      const p = this.pendingStreams.get(name);
+      if (!p) return;
+      this.pendingStreams.delete(name);
+      p.reject(new RamphastosError({ code: "send_failed", message: e instanceof Error ? e.message : String(e) }));
+    });
     return result;
   }
 
@@ -414,7 +421,12 @@ export class RamphastosSession {
     const result = new Promise<unknown>((resolve, reject) =>
       this.pending.set(id, { resolve, reject })
     );
-    void this.conn.send("Send", msg);
+    this.conn.send("Send", msg).catch((e) => {
+      const p = this.pending.get(id);
+      if (!p) return;
+      this.pending.delete(id);
+      p.reject(new RamphastosError({ code: "send_failed", message: e instanceof Error ? e.message : String(e) }));
+    });
     return result;
   }
 
