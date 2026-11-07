@@ -6,8 +6,8 @@
     <Authors>Ramphastos contributors</Authors>
     <Copyright>Copyright (c) 2014-2026 the Ramphastos contributors</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/ramphastos/ramphastos</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ramphastos/ramphastos.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/astropiano/ramphastos</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/astropiano/ramphastos.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ramphastos_square_128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>

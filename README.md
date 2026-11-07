@@ -45,7 +45,7 @@ return <button onClick={() => vm.increment()}>{vm.count}</button>;
   first-class; co-browse, signage, and monitoring walls come free.
 - **Portable sessions** — sessions persist (memory, file, Redis) and resume
   via seq/ack replay. Built on
-  [TotalSerializer](https://github.com/ramphastos/totalserializer), sessions
+  [TotalSerializer](https://github.com/astropiano/totalserializer), sessions
   capture private fields, event registrations, and delegates — so they can
   migrate between nodes *live*.
 - **Client-authoritative mirror sessions** — a client app can own the model
@@ -103,13 +103,13 @@ Vite URL.
 `Ramphastos.Core` depends on `TotalSerializer` and
 `TotalSerializer.ReflectionTools`, which are not yet on nuget.org. Until they
 are published, clone
-[totalserializer](https://github.com/ramphastos/totalserializer) next to this
+[totalserializer](https://github.com/astropiano/totalserializer) next to this
 repo — `nuget.config` resolves its local package output
 (`../totalserializer/packages-local`) automatically.
 
 ```bash
-git clone https://github.com/ramphastos/ramphastos
-git clone https://github.com/ramphastos/totalserializer
+git clone https://github.com/astropiano/ramphastos
+git clone https://github.com/astropiano/totalserializer
 cd totalserializer && dotnet pack -c Release -o packages-local
 cd ../ramphastos
 dotnet build Ramphastos.slnx

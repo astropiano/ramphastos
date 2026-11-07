@@ -18,7 +18,7 @@ jobs:
       # packages are published to nuget.org.
       - uses: actions/checkout@v4
         with:
-          repository: ramphastos/totalserializer
+          repository: astropiano/totalserializer
           path: totalserializer
           token: ${{ secrets.CI_PAT || github.token }}
 
