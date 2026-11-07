@@ -10,3 +10,6 @@ dist/
 
 # misc
 .DS_Store
+
+# devin local config
+.devin/config.local.json

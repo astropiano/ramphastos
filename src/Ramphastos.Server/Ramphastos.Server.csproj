@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>ASP.NET Core hosting for Ramphastos sessions: SignalR endpoint, JWT auth, and pluggable session providers.</Description>
   </PropertyGroup>
 
   <ItemGroup>

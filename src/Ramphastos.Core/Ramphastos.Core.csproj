@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>View-model graph, notification engine, and session actor for Ramphastos server-side MVVM applications.</Description>
   </PropertyGroup>
 
   <ItemGroup>

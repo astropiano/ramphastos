@@ -1,0 +1,26 @@
+<Project>
+
+  <!-- Shared NuGet packaging metadata for all Ramphastos.* libraries. -->
+  <PropertyGroup>
+    <Version>0.2.0-alpha.1</Version>
+    <Authors>Ramphastos contributors</Authors>
+    <Copyright>Copyright (c) 2014-2026 the Ramphastos contributors</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/ramphastos/ramphastos</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ramphastos/ramphastos.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>ramphastos_square_128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>mvvm;viewmodel;signalr;realtime;sync;react;server-side-ui;websocket</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\branding\ramphastos_square_128.png"
+          Pack="true" PackagePath="\" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)..\README.md"
+          Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>

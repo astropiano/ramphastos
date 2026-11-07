@@ -1,93 +1,146 @@
-# Ramphastos Ui
+# Ramphastos
 
+<img src="branding/ramphastos.png" alt="Ramphastos" width="320" />
 
+**Server-side MVVM for .NET — your view-models stay on the server, your UI stays a real SPA.**
+
+Ramphastos keeps the view-model graph on the server as plain C# objects and
+replicates it to clients as an observable object graph. Property changes flow
+to clients as JSON Patch batches; commands invoked on the client execute
+server-side inside a per-session actor. The first client binding is React,
+but the wire protocol is frontend-agnostic.
+
+> **Status: alpha.** Ramphastos is a ground-up revival of RamphastosUi
+> (2013–2023), which ran the same model in production against AngularJS and a
+> self-maintained CefGlue fork. The vNext rewrite keeps the sync-engine
+> concept and rebuilds it on .NET 10, SignalR, and a versioned wire protocol.
+> APIs will change.
+
+## What you write
+
+```csharp
+public class CounterVm : ApplicationModel
+{
+    private int _count;
+    public int Count { get => _count; set => Set(ref _count, value); }
+
+    [Command]
+    public Task Increment(int by = 1) { Count += by; return Task.CompletedTask; }
+}
+```
+
+```tsx
+const vm = useViewModel<CounterVm>();
+return <button onClick={() => vm.increment()}>{vm.count}</button>;
+```
+
+## Features
+
+- **Server-authoritative object graph** — the VM lives on the server; every
+  client holds a live replica, patched per actor turn (RFC 6902 + a
+  `textpatch` op for high-frequency text editing via diff-match-patch).
+- **Commands, not endpoints** — client calls (`invoke`) and property writes
+  are intents, serialized through the session actor. No locks in user code.
+- **Multi-viewer sessions** — `viewer` and `controller` roles are
+  first-class; co-browse, signage, and monitoring walls come free.
+- **Portable sessions** — sessions persist (memory, file, Redis) and resume
+  via seq/ack replay. Built on
+  [TotalSerializer](https://github.com/ramphastos/totalserializer), sessions
+  capture private fields, event registrations, and delegates — so they can
+  migrate between nodes *live*.
+- **Client-authoritative mirror sessions** — a client app can own the model
+  and reach a relay server through an outbound-only connection; the server
+  holds a replica and fans it out to viewers.
+- **Binary stream plane** — named byte streams (PTY output, file transfer,
+  live feeds) multiplexed on the same session; control rides the JSON
+  envelope, payload bytes never do.
+- **Shared objects** — process-wide state mirrored into multiple sessions.
+
+## Repository layout
+
+```
+src/
+  Ramphastos.Protocol/        wire contracts only, zero dependencies
+  Ramphastos.Core/            VM graph, notification engine, session actor
+  Ramphastos.Server/          ASP.NET Core, SignalR, auth, providers
+  Ramphastos.TestSdk/         in-memory test host + scripted test client
+  Ramphastos.Core.Facts/      test suite (xunit)
+  client/
+    ramphastos-client/        @ramphastos/ramphastos-client (TS, framework-agnostic)
+    ramphastos-react/         @ramphastos/ramphastos-react (hooks)
+examples/hello-world/         minimal app: VM + React UI + host
+docs/architecture.md          full architecture + wire protocol spec
+branding/                     logo and icon assets
+```
 
 ## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+**Requirements:** .NET 10 SDK, Node.js 22+.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Server packages target `net10.0`; client packages are on npm under
+`@ramphastos/*`.
 
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://github.com/astropiano/ramphastos.git
-git branch -M develop
-git push -uf origin develop
+```bash
+dotnet add package Ramphastos.Server
+npm add @ramphastos/ramphastos-client @ramphastos/ramphastos-react
 ```
 
-## Integrate with your tools
+```csharp
+// Program.cs — minimal host
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRamphastos<CounterVm>();
+var app = builder.Build();
+app.MapRamphastos();              // SignalR endpoint at /ramphastos
+app.Run();
+```
 
-* [Set up project integrations](https://github.com/astropiano/ramphastos/settings)
+Run the hello-world example (`examples/hello-world`): start
+`HelloWorld.Server`, then `npm install && npm run dev` in `web/` and open the
+Vite URL.
 
-## Collaborate with your team
+### Building from source
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+`Ramphastos.Core` depends on `TotalSerializer` and
+`TotalSerializer.ReflectionTools`, which are not yet on nuget.org. Until they
+are published, clone
+[totalserializer](https://github.com/ramphastos/totalserializer) next to this
+repo — `nuget.config` resolves its local package output
+(`../totalserializer/packages-local`) automatically.
 
-## Test and Deploy
+```bash
+git clone https://github.com/ramphastos/ramphastos
+git clone https://github.com/ramphastos/totalserializer
+cd totalserializer && dotnet pack -c Release -o packages-local
+cd ../ramphastos
+dotnet build Ramphastos.slnx
+dotnet test  src/Ramphastos.Core.Facts
+npm ci && npm run build --workspaces
+```
 
-Use the built-in continuous integration in GitLab.
+## How it compares
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+Ramphastos sits between **Blazor Server** (which replicates a *render tree* —
+Ramphastos replicates the view-model graph and leaves rendering to your SPA
+framework), **Phoenix LiveView / Livewire** (which diff rendered HTML —
+Ramphastos diffs data), and **ActualLab.Fusion** (which replicates computed
+values for general reactive RPC — Ramphastos is a session-scoped UI framework
+with roles, commands, streams, and portable sessions). The mirror topology —
+a client-authoritative model replicated upstream through a relay — is,
+as far as we know, unique.
 
-***
+## Documentation
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- [docs/architecture.md](docs/architecture.md) — design goals, session
+  model, the full wire protocol (envelope, handshake, patches, invoke/call,
+  streams, mirror sessions), and the roadmap.
+- `examples/hello-world` — end-to-end minimal app.
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Early-stage and feedback-driven. Issues and design discussion are welcome;
+please read `docs/architecture.md` first — the protocol is the product.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+[MIT](LICENSE). Ramphastos descends from RamphastosUi (2013–2023,
+matchmycolor LLC), which was also released under MIT.

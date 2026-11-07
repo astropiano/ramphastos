@@ -62,7 +62,7 @@ concept and discards everything that made it expensive to maintain.
 ## 3. Repository layout
 
 ```
-ramphastos-ui/
+ramphastos/
 ├── src/
 │   ├── Ramphastos.Protocol/      # wire contracts only, zero deps
 │   ├── Ramphastos.Core/          # VM graph, notification engine, session actor
