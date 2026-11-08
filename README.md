@@ -100,21 +100,25 @@ Vite URL.
 
 ### Building from source
 
-`Ramphastos.Core` depends on `TotalSerializer` and
-`TotalSerializer.ReflectionTools`, which are not yet on nuget.org. Until they
-are published, clone
-[totalserializer](https://github.com/astropiano/totalserializer) next to this
-repo — `nuget.config` resolves its local package output
-(`../totalserializer/packages-local`) automatically.
-
 ```bash
 git clone https://github.com/astropiano/ramphastos
-git clone https://github.com/astropiano/totalserializer
-cd totalserializer && dotnet pack -c Release -o packages-local
-cd ../ramphastos
+cd ramphastos
 dotnet build Ramphastos.slnx
 dotnet test  src/Ramphastos.Core.Facts
 npm ci && npm run build --workspaces
+```
+
+`TotalSerializer` and `TotalSerializer.ReflectionTools` come from nuget.org.
+
+To hack on
+[totalserializer](https://github.com/astropiano/totalserializer) alongside
+this repo, check it out next to this one and set
+`RAMPHASTOS_LOCAL_DEPS=1` — the build then uses project references into the
+sibling tree instead of the published packages:
+
+```bash
+export RAMPHASTOS_LOCAL_DEPS=1            # sibling: ../totalserializer
+dotnet build Ramphastos.slnx
 ```
 
 ## How it compares

@@ -14,8 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TotalSerializer.ReflectionTools" />
-    <PackageReference Include="TotalSerializer" />
+    <PackageReference Condition="'$(RamphastosLocalDeps)' != 'true'" Include="TotalSerializer.ReflectionTools" />
+    <PackageReference Condition="'$(RamphastosLocalDeps)' != 'true'" Include="TotalSerializer" />
+    <ProjectReference Condition="'$(RamphastosLocalDeps)' == 'true'" Include="$(RamphastosLocalDepsRoot)totalserializer\src\TotalSerializer.ReflectionTools\TotalSerializer.ReflectionTools.csproj" />
+    <ProjectReference Condition="'$(RamphastosLocalDeps)' == 'true'" Include="$(RamphastosLocalDepsRoot)totalserializer\src\TotalSerializer\TotalSerializer.csproj" />
     <PackageReference Include="DiffMatchPatch" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="StackExchange.Redis" />

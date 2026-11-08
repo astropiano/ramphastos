@@ -14,6 +14,13 @@
     <PackageTags>mvvm;viewmodel;signalr;realtime;sync;react;server-side-ui;websocket</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+
+    <!-- Local development: set env var RAMPHASTOS_LOCAL_DEPS=1 to build
+         against the sibling totalserializer checkout instead of the
+         published NuGet packages. Override the sibling root with the
+         RamphastosLocalDepsRoot env var or /p: property. -->
+    <RamphastosLocalDeps Condition="'$(RAMPHASTOS_LOCAL_DEPS)' != ''">true</RamphastosLocalDeps>
+    <RamphastosLocalDepsRoot Condition="'$(RamphastosLocalDepsRoot)' == ''">$(MSBuildThisFileDirectory)..\..\</RamphastosLocalDepsRoot>
   </PropertyGroup>
 
   <ItemGroup>

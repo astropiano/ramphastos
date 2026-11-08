@@ -10,30 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: ramphastos
-
-      # Ramphastos.Core consumes TotalSerializer via a local sibling feed
-      # (nuget.config -> ../totalserializer/packages-local) until the
-      # packages are published to nuget.org.
-      - uses: actions/checkout@v4
-        with:
-          repository: astropiano/totalserializer
-          path: totalserializer
-          token: ${{ secrets.CI_PAT || github.token }}
 
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.x
 
-      - name: Pack TotalSerializer into the local feed
-        run: dotnet pack totalserializer -c Release -o totalserializer/packages-local
-
       - name: Build
-        run: dotnet build ramphastos/Ramphastos.slnx -c Release
+        run: dotnet build Ramphastos.slnx -c Release
 
       - name: Test
-        run: dotnet test ramphastos/src/Ramphastos.Core.Facts -c Release
+        run: dotnet test src/Ramphastos.Core.Facts -c Release
 
   client:
     runs-on: ubuntu-latest

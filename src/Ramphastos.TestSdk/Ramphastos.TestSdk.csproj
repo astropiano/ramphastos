@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TotalSerializer" />
+    <PackageReference Condition="'$(RamphastosLocalDeps)' != 'true'" Include="TotalSerializer" />
+    <ProjectReference Condition="'$(RamphastosLocalDeps)' == 'true'" Include="$(RamphastosLocalDepsRoot)totalserializer\src\TotalSerializer\TotalSerializer.csproj" />
     <PackageReference Include="DiffMatchPatch" />
     <ProjectReference Include="..\Ramphastos.Core\Ramphastos.Core.csproj" />
     <ProjectReference Include="..\Ramphastos.Protocol\Ramphastos.Protocol.csproj" />
