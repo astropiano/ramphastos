@@ -121,6 +121,8 @@ export RAMPHASTOS_LOCAL_DEPS=1            # sibling: ../totalserializer
 dotnet build Ramphastos.slnx
 ```
 
+More on builds, tests, and packaging: [docs/development.md](docs/development.md).
+
 ## How it compares
 
 Ramphastos sits between **Blazor Server** (which replicates a *render tree* —
@@ -137,6 +139,8 @@ as far as we know, unique.
 - [docs/architecture.md](docs/architecture.md) — design goals, session
   model, the full wire protocol (envelope, handshake, patches, invoke/call,
   streams, mirror sessions), and the roadmap.
+- [docs/development.md](docs/development.md) — building, testing, local
+  dependencies, and packaging.
 - `examples/hello-world` — end-to-end minimal app.
 
 ## Contributing
