@@ -11,7 +11,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>ramphastos_square_128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>mvvm;viewmodel;signalr;realtime;sync;react;server-side-ui;websocket</PackageTags>
+    <PackageTags>sync;replication;object-graph;state-sync;realtime;mvvm;signalr;websocket;react;remote-objects</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
 

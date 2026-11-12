@@ -1,7 +1,7 @@
 {
   "name": "@ramphastos/ramphastos-client",
   "version": "0.2.0",
-  "description": "Framework-agnostic Ramphastos protocol client",
+  "description": "Framework-agnostic client for the Ramphastos sync protocol — replicated object graphs, commands, and binary streams",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -20,6 +20,10 @@
     "directory": "src/client/ramphastos-client"
   },
   "license": "MIT",
+  "keywords": ["sync", "replication", "object-graph", "state-sync", "realtime", "mvvm", "signalr", "websocket", "ramphastos"],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -b",
     "prepack": "npm run build"

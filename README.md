@@ -2,13 +2,16 @@
 
 <img src="branding/ramphastos.png" alt="Ramphastos" width="320" />
 
-**Server-side MVVM for .NET — your view-models stay on the server, your UI stays a real SPA.**
+**Server-authoritative object-graph sync for .NET — keep a C# object graph on
+one side, get a live replica on every client.**
 
-Ramphastos keeps the view-model graph on the server as plain C# objects and
-replicates it to clients as an observable object graph. Property changes flow
-to clients as JSON Patch batches; commands invoked on the client execute
-server-side inside a per-session actor. The first client binding is React,
-but the wire protocol is frontend-agnostic.
+Ramphastos replicates a server-owned object graph to clients as an
+observable replica: changes flow as JSON Patch batches, and commands invoked
+on the client execute inside a per-session actor. The flagship use case is
+server-side MVVM — view-models as plain C# objects driving a real SPA —
+but the same machinery syncs any model: terminal sessions, device state,
+live dashboards. The first client binding is React; the wire protocol is
+frontend-agnostic.
 
 > **Status: alpha.** Ramphastos is a ground-up revival of RamphastosUi
 > (2013–2023), which ran the same model in production against AngularJS and a
@@ -36,9 +39,16 @@ return <button onClick={() => vm.increment()}>{vm.count}</button>;
 
 ## Features
 
-- **Server-authoritative object graph** — the VM lives on the server; every
-  client holds a live replica, patched per actor turn (RFC 6902 + a
+- **Server-authoritative object graph** — the model lives on the server;
+  every client holds a live replica, patched per actor turn (RFC 6902 + a
   `textpatch` op for high-frequency text editing via diff-match-patch).
+- **Client-authoritative mirror sessions** — a client app can own the model
+  and reach a relay server through an outbound-only connection; the server
+  holds a replica and fans it out to viewers. No inbound ports required —
+  built for devices and desktop agents behind NAT.
+- **Binary stream plane** — named byte streams (PTY output, file transfer,
+  live feeds) multiplexed on the same session; control rides the JSON
+  envelope, payload bytes never do.
 - **Commands, not endpoints** — client calls (`invoke`) and property writes
   are intents, serialized through the session actor. No locks in user code.
 - **Multi-viewer sessions** — `viewer` and `controller` roles are
@@ -48,13 +58,10 @@ return <button onClick={() => vm.increment()}>{vm.count}</button>;
   [TotalSerializer](https://github.com/astropiano/totalserializer), sessions
   capture private fields, event registrations, and delegates — so they can
   migrate between nodes *live*.
-- **Client-authoritative mirror sessions** — a client app can own the model
-  and reach a relay server through an outbound-only connection; the server
-  holds a replica and fans it out to viewers.
-- **Binary stream plane** — named byte streams (PTY output, file transfer,
-  live feeds) multiplexed on the same session; control rides the JSON
-  envelope, payload bytes never do.
 - **Shared objects** — process-wide state mirrored into multiple sessions.
+- **MVVM without the plumbing** — `[Command]`, `[ServerOnly]`, `[NoSync]`,
+  `[TextSync]`, `[Shared]` attributes shape what syncs and who can call it;
+  React hooks (`useViewModel`) consume the replica directly.
 
 ## Repository layout
 

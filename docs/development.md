@@ -66,6 +66,14 @@ The npm packages (`@ramphastos/ramphastos-client`,
 `@ramphastos/ramphastos-react`) build with `tsc -b` via their `prepack`
 script; publish from each package directory with `npm publish`.
 
+## Releasing
+
+Releases are tag-driven: `git tag v0.3.0 && git push --tags` runs the CI
+`publish` job, which packs `Ramphastos.*` to nuget.org (OIDC trusted
+publishing) and versions + publishes both npm packages from the tag name.
+The `Version` in `src/Directory.Build.props` is the development version —
+tag builds override it.
+
 ## Layout
 
 ```

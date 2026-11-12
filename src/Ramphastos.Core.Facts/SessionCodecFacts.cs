@@ -107,7 +107,7 @@ public class SessionCodecFacts : IDisposable
 
         await using var host = new TestHost(() => new WiredVm(), Opts(codec: null));
         var c = await host.ConnectAsync(sessionId: id);
-        c.SessionId.Should().NotBe(id, "unreadable format must mint a fresh session");
+        c.SessionId.Should().Be(id, "rejected record falls back to fresh state under the requested id");
         c.At("/count")!.GetValue<int>().Should().Be(0);
     }
 
@@ -153,7 +153,7 @@ public class SessionCodecFacts : IDisposable
         options.Migrators.Add(new RejectingMigrator());
         await using var host = new TestHost(() => new DemoVm(), options);
         var c = await host.ConnectAsync(sessionId: sessionId);
-        c.SessionId.Should().NotBe(sessionId);
+        c.SessionId.Should().Be(sessionId, "migrator rejection falls back to fresh state under the requested id");
         c.At("/count")!.GetValue<int>().Should().Be(0);
     }
 

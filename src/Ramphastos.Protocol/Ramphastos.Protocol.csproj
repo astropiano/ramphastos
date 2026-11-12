@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Description>Versioned wire contracts for the Ramphastos server-side MVVM framework. Zero dependencies.</Description>
+    <Description>Versioned wire contracts for the Ramphastos sync protocol. Zero dependencies.</Description>
   </PropertyGroup>
 
 </Project>

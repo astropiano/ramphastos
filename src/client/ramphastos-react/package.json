@@ -1,7 +1,7 @@
 {
   "name": "@ramphastos/ramphastos-react",
   "version": "0.2.0",
-  "description": "React bindings for Ramphastos sessions",
+  "description": "React bindings for Ramphastos sync sessions — useViewModel over the replicated object graph",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -20,6 +20,10 @@
     "directory": "src/client/ramphastos-react"
   },
   "license": "MIT",
+  "keywords": ["sync", "replication", "object-graph", "state-sync", "realtime", "mvvm", "signalr", "websocket", "ramphastos"],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -b",
     "prepack": "npm run build"

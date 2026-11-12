@@ -1,16 +1,18 @@
-# Ramphastos UI — Architecture (vNext)
+# Ramphastos — Architecture (vNext)
 
 Status: draft for review
 Date: 2026-09-26
 
 ## 1. Vision
 
-Ramphastos UI vNext is a **server-side MVVM framework**: view-models live on the
-server as C# objects; their state is replicated to clients as an observable
-object graph; commands invoked on the client execute server-side. The first
-client binding is React, but the protocol and client core are
-**frontend-agnostic** — any UI layer that can consume JSON patches and invoke
-RPCs can host a Ramphastos app.
+Ramphastos vNext is a **server-authoritative sync framework**: an object
+graph lives on the server as C# objects; its state is replicated to clients
+as an observable replica; commands invoked on the client execute server-side.
+The flagship use case is **server-side MVVM** — view-models driving a real
+SPA — but the same machinery syncs any model: terminal sessions, device
+state, live dashboards. The first client binding is React, but the protocol
+and client core are **frontend-agnostic** — any client that can consume JSON
+patches and invoke RPCs can host a Ramphastos session.
 
 The previous generation (RamphastosUi, 2013–2023) proved the model in
 production but coupled it to AngularJS, a self-maintained CefGlue fork, and a

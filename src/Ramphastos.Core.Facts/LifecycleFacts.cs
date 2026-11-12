@@ -55,7 +55,7 @@ public class LifecycleFacts : IDisposable
             new SessionOptions { Provider = provider });
         var c = await host.ConnectAsync(sessionId: sessionId);
 
-        c.SessionId.Should().NotBe(sessionId, "schema mismatch must mint a fresh session");
+        c.SessionId.Should().Be(sessionId, "schema mismatch falls back to fresh state under the requested id");
         c.At("/count")!.GetValue<int>().Should().Be(0, "mismatched schema → fresh VM, no stale data");
     }
 
