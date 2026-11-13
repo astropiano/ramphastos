@@ -12,7 +12,7 @@ import type {
   RamphastosStream,
   SessionRole,
   SessionState,
-} from "@ramphastos/ramphastos-client";
+} from "ramphastos-client";
 
 const SessionContext = createContext<RamphastosSession | null>(null);
 

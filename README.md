@@ -73,8 +73,8 @@ src/
   Ramphastos.TestSdk/         in-memory test host + scripted test client
   Ramphastos.Core.Facts/      test suite (xunit)
   client/
-    ramphastos-client/        @ramphastos/ramphastos-client (TS, framework-agnostic)
-    ramphastos-react/         @ramphastos/ramphastos-react (hooks)
+    ramphastos-client/        ramphastos-client (TS, framework-agnostic)
+    ramphastos-react/         ramphastos-react (hooks)
 examples/hello-world/         minimal app: VM + React UI + host
 docs/architecture.md          full architecture + wire protocol spec
 branding/                     logo and icon assets
@@ -85,11 +85,11 @@ branding/                     logo and icon assets
 **Requirements:** .NET 10 SDK, Node.js 22+.
 
 Server packages target `net10.0`; client packages are on npm under
-`@ramphastos/*`.
+`ramphastos-*`.
 
 ```bash
 dotnet add package Ramphastos.Server
-npm add @ramphastos/ramphastos-client @ramphastos/ramphastos-react
+npm add ramphastos-client ramphastos-react
 ```
 
 ```csharp

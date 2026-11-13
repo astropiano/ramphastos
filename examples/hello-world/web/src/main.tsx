@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RamphastosSession } from "@ramphastos/ramphastos-client";
-import { RamphastosProvider } from "@ramphastos/ramphastos-react";
+import { RamphastosSession } from "ramphastos-client";
+import { RamphastosProvider } from "ramphastos-react";
 import { App } from "./App";
 
 async function main() {

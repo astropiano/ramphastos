@@ -1,4 +1,4 @@
-# @ramphastos/ramphastos-client
+# ramphastos-client
 
 Framework-agnostic TypeScript client for the
 [Ramphastos](https://github.com/astropiano/ramphastos) sync protocol —
@@ -8,7 +8,7 @@ Part of the [Ramphastos](https://github.com/astropiano/ramphastos)
 monorepo. API is alpha and will change.
 
 ```ts
-import { RamphastosSession } from "@ramphastos/ramphastos-client";
+import { RamphastosSession } from "ramphastos-client";
 
 const session = await RamphastosSession.connect("http://localhost:5000/ramphastos");
 
@@ -23,6 +23,6 @@ Client-authoritative apps (devices, desktop agents behind NAT) can publish
 their own model upstream with `RamphastosAuthority` — the server holds a
 replica and fans it out to viewers.
 
-React bindings: [`@ramphastos/ramphastos-react`](https://www.npmjs.com/package/@ramphastos/ramphastos-react).
+React bindings: [`ramphastos-react`](https://www.npmjs.com/package/ramphastos-react).
 
 License: MIT.

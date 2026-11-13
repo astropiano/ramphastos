@@ -62,8 +62,8 @@ marked `IsPackable=false`.
 dotnet pack src -c Release -o packages-out
 ```
 
-The npm packages (`@ramphastos/ramphastos-client`,
-`@ramphastos/ramphastos-react`) build with `tsc -b` via their `prepack`
+The npm packages (`ramphastos-client`,
+`ramphastos-react`) build with `tsc -b` via their `prepack`
 script; publish from each package directory with `npm publish`.
 
 ## Releasing

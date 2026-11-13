@@ -84,6 +84,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm ci
-          npm version ${VERSION#v} --workspace @ramphastos/ramphastos-client --workspace @ramphastos/ramphastos-react --no-git-tag-version
-          npm pkg set "dependencies.@ramphastos/ramphastos-client=^${VERSION#v}" --workspace @ramphastos/ramphastos-react
-          npm publish --workspace @ramphastos/ramphastos-client --workspace @ramphastos/ramphastos-react --access public --provenance
+          npm version ${VERSION#v} --workspace ramphastos-client --workspace ramphastos-react --no-git-tag-version
+          npm pkg set "dependencies.ramphastos-client=^${VERSION#v}" --workspace ramphastos-react
+          npm publish --workspace ramphastos-client --workspace ramphastos-react --access public --provenance

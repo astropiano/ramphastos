@@ -1,5 +1,5 @@
 {
-  "name": "@ramphastos/ramphastos-client",
+  "name": "ramphastos-client",
   "version": "0.2.0",
   "description": "Framework-agnostic client for the Ramphastos sync protocol — replicated object graphs, commands, and binary streams",
   "type": "module",

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useViewModel } from "@ramphastos/ramphastos-react";
+import { useViewModel } from "ramphastos-react";
 import type { CounterVm } from "./vm";
 
 export function App() {
