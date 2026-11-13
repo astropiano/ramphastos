@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
     <Description>Test SDK for Ramphastos applications: in-memory test host and scripted test client.</Description>
   </PropertyGroup>
 
